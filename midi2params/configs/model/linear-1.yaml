@@ -1,0 +1,13 @@
+id: 'linear-1'
+# size of inputs EXCLUDING any autoregressive functionality
+input_size: 131
+# choose between 'onehot', 'scalar', and 'none'
+autoregressive_type: 'onehot'
+# size of hidden state
+hidden_size: 300
+# number of layers in the RNN
+num_layers: 1
+# dropout probability for RNN
+dropout: 0.0
+# is bidirectional?
+bidirectional: True

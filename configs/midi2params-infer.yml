@@ -1,0 +1,54 @@
+# INFERENCE CONFIG
+---
+# replace these absolute paths with your own paths
+seed: 12345
+device: 'cuda'
+# frame rate of DDSP control parameters
+frame_rate: 250
+sample_rate: 16000
+mode: 'inference'
+logging:
+    log_dir: '/juice/scr/rjcaste/curis/wavegenie/logs'
+preprocessing:
+    # offset applied to any f0 signal (should be in frame rate units)
+    offset_f0: 0
+    # offset applied to any loudness signal (should be in frame rate units)
+    offset_ld: 0
+    # length of the clip taken from a file
+    len_clip: 5
+    # length of clip after cropping down to a subclip
+    len_subclip: 4
+model:
+    id: 'seq-1'
+    constructor_args:
+        # size of inputs EXCLUDING any autoregressive functionality
+        input_size: 131
+        # choose between 'onehot', 'scalar', and 'none'
+        autoregressive_type: 'onehot'
+        # seq_type: type of RNN
+        seq_type: 'GRU'
+        # size of hidden state
+        hidden_size: 300
+        # number of layers in the RNN
+        num_layers: 1
+        # dropout probability for RNN
+        dropout: 0.0
+    # path to best model .pt file
+    # bad parameters
+    #best_path: '/juice/scr/rjcaste/curis/wavegenie/logs/2020-08-13 08:55:45/best_model.pt'
+    # good parameters
+    #best_path: '/juice/scr/rjcaste/curis/wavegenie/logs/2020-08-14 11:32:10/best_model.pt'
+    # bidirectional model on good parameters
+    best_path: '/juice/scr/rjcaste/curis/wavegenie/logs/2020-08-17 13:51:46/best_model.pt'
+dataset:
+    # path to dataset, which contains paired training data
+    dset_path: '/juice/scr/rjcaste/curis/wavegenie/data/DDSPViolin-clipped2'
+    # name of subfolder under dset_path corresponding to MIDI files
+    midi_folder_name: 'midi'
+    params_folder_name: 'params'
+    audio_folder_name: 'wav'
+loader:
+    shuffle_during_eval: False
+    batch_size: 104
+    num_workers: 4
+    pin_memory: True

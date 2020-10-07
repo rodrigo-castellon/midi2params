@@ -1,0 +1,14 @@
+wavegenie.egg-info/
+params/
+test_data/
+logs/
+data/
+wandb/
+__pycache__
+.ipynb_checkpoints
+*.wav
+*.pyc
+*.npy
+*.p
+*.pkl
+*.mid*

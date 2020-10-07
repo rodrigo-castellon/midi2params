@@ -1,0 +1,24 @@
+---
+# replace these absolute paths with your own paths
+seed: 12345
+device: 'cuda'
+loss_fn: 'regression'
+log_dir: '/juice/scr/rjcaste/curis/wavegenie/logs'
+num_epochs: 10
+synthetic_preliminary: True  # keep True, for now. Doesn't work with this as False.
+training:
+    optim: 'Adam'
+    learning_rate: 1.0e-2
+    weight_decay: 0.0
+model:
+    id: 'linear-1'
+dataset:
+    fpath: '/juice/scr/rjcaste/curis/lmd_full/synthetic_dataset'
+    seqlength: 1
+    hopsize: 1
+    num_pitches: 129
+loader:
+    shuffle_during_eval: False
+    batch_size: 100
+    num_workers: 4
+    pin_memory: True

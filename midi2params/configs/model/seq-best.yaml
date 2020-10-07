@@ -1,0 +1,24 @@
+id: 'seq-best'
+################
+# RNN SETTINGS #
+################
+# size of inputs EXCLUDING any autoregressive functionality. So 129 (pitches) + 1 (onset) + 1 (offset).
+input_size: 131
+# choose between 'onehot', 'scalar', and 'none'
+autoregressive_type: 'onehot'
+# seq_type: type of RNN
+seq_type: 'GRU'
+# size of hidden state
+hidden_size: 233
+# number of layers in the RNN
+num_layers: 2
+# dropout probability for RNN
+dropout: 0.5381242007087286
+# is bidirectional?
+bidirectional: False
+
+###################
+# LINEAR SETTINGS #
+###################
+num_linears: 2
+linear_hidden_size: 324

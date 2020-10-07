@@ -1,0 +1,62 @@
+# TRAINING CONFIG
+---
+# replace these absolute paths with your own paths
+seed: 1
+device: 'cuda'
+# frame rate of DDSP control parameters
+frame_rate: 250
+sample_rate: 16000
+mode: 'training'
+# a variable to turn on if doing a one-off experiment
+oneoff: False
+subconfigs:
+- model: 'seq-1'
+logging:
+    log_dir: '/juice/scr/rjcaste/curis/wavegenie/logs'
+    # log perplexity of every loss metric to W&B
+    log_perplexity: False
+    example_saving:
+        # save a prediction example every N epochs
+        save_every: 10
+        # index of first example within first mini-batch
+        i: 0
+        # number of examples to save (starting with example #i)
+        num_examples: 10
+preprocessing:
+    # offset applied to any f0 signal (should be in frame rate units)
+    offset_f0: 0
+    # offset applied to any loudness signal (should be in frame rate units)
+    offset_ld: 0
+    # length of the clip taken from a file
+    len_clip: 5
+    # length of clip after cropping down to a subclip
+    len_subclip: 4
+    # number of quantization bins for loudness
+    ld_bins: 121
+    # number of quantization bins for f0 (cents)
+    cent_bins: 101
+training:
+    num_epochs: 100
+    optim: 'Adam'
+    learning_rate: 1.0e-2
+    # L2 regularization
+    weight_decay: 1.0e-3
+    # use Gaussian trick from CREPE for backpropping through, and
+    # add this new loss function to the metrics (but keep computing the old
+    # super discrete one as well)
+    gaussian_during_train: False
+    gaussian_during_train_std: 2
+    # backprop only through loudness loss
+    train_only_on_loudness: False
+dataset:
+    # path to dataset, which contains paired training data
+    dset_path: '/juice/scr/rjcaste/curis/wavegenie/data/303Static'
+    # name of subfolder under dset_path corresponding to control parameters
+    params_folder_name: 'params'
+    # name of subfolder under dset_path corresponding to MIDI files
+    midi_folder_name: 'midi'
+loader:
+    shuffle_during_eval: False
+    batch_size: 104
+    num_workers: 4
+    pin_memory: True
