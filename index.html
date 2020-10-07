@@ -17,10 +17,10 @@ See the below diagram to get an idea of what we're talking about.
 <p>
 Below are some samples comparing our proposed system DDSP(midi2params_{aligned}(MIDI)) to other "basslines," including:
 <ul>
-    <li><a href="https://en.wikipedia.org/wiki/FluidSynth">FluidSynth</a>: A free and open-source synthesizer using SoundFonts.</li>
-    <li><a href="https://en.wikipedia.org/wiki/Concatenative_synthesis">Concatenative Synthesis</a>: A high quality commercial synthesizer that heuristically stitches together professional violin audio samples.</li>
-    <li>DDSP(Heuristic(MIDI)): </li>
-    <li>DDSP: </li>
+    <li><a href="https://en.wikipedia.org/wiki/FluidSynth">FluidSynth</a>: A free and open-source synthesizer using SoundFonts that turns MIDI into audio.</li>
+    <li><a href="https://en.wikipedia.org/wiki/Concatenative_synthesis">Concatenative Synthesis</a>: A high quality commercial synthesizer that heuristically stitches together professional violin audio samples, turning MIDI into audio.</li>
+    <li>DDSP: A method for synthesizing audio from audio parameters (f0/loudness). Here, we use DDSP to synthesize from ground truth audio parameters.</li>
+    <li>DDSP(Heuristic(MIDI)): Here we compose DDSP (audio parameters -> audio) and a rudimentary heuristic (MIDI -> audio parameters). </li>
 </ul>
 
 </p>
