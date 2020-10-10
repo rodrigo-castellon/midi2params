@@ -9,6 +9,12 @@ s_str = """<tr>
     <td><audio controls="controls" src="data/obligation/00.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
+    <td><audio controls="controls" src="data/drain/00.wav">
+        Your browser does not support the HTML5 Audio element.
+    </audio></td>
+    <td><audio controls="controls" src="data/bubble/00.wav">
+        Your browser does not support the HTML5 Audio element.
+    </audio></td>
     <td><audio controls="controls" src="data/variant/00.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
@@ -19,12 +25,6 @@ s_str = """<tr>
         Your browser does not support the HTML5 Audio element.
     </audio></td>
     <td><audio controls="controls" src="data/art/00.wav">
-        Your browser does not support the HTML5 Audio element.
-    </audio></td>
-    <td><audio controls="controls" src="data/drain/00.wav">
-        Your browser does not support the HTML5 Audio element.
-    </audio></td>
-    <td><audio controls="controls" src="data/bubble/00.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
 </tr>"""
