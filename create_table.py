@@ -6,25 +6,25 @@ import copy
 
 s_str = """<tr>
     <td>##00</td>
-    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/obligation/00.wav">
+    <td><audio controls="controls" src="data/obligation/00.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/variant/00.wav">
+    <td><audio controls="controls" src="data/variant/00.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/shoulder/00.wav">
+    <td><audio controls="controls" src="data/shoulder/00.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/grandmother/00.wav">
+    <td><audio controls="controls" src="data/grandmother/00.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/art/00.wav">
+    <td><audio controls="controls" src="data/art/00.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/drain/00.wav">
+    <td><audio controls="controls" src="data/drain/00.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/bubble/00.wav">
+    <td><audio controls="controls" src="data/bubble/00.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
 </tr>"""
