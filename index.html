@@ -1,5 +1,6 @@
 <html>
 <head><title>Learnable MIDI Synthesis</title>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 <h1>Musical examples from <i>Towards realistic MIDI instrument synthesizers</i></h1>
@@ -17,10 +18,13 @@ See the below diagram to get an idea of what we're talking about.
 <p>
 Below are some samples comparing our proposed system DDSP(midi2params_{aligned}(MIDI)) to other "basslines," including:
 <ul>
-    <li><a href="https://en.wikipedia.org/wiki/FluidSynth">FluidSynth</a>: A free and open-source synthesizer using SoundFonts that turns MIDI into audio.</li>
-    <li><a href="https://en.wikipedia.org/wiki/Concatenative_synthesis">Concatenative Synthesis</a>: A high quality commercial synthesizer that heuristically stitches together professional violin audio samples, turning MIDI into audio.</li>
-    <li><a href="https://github.com/magenta/ddsp">DDSP</a>: A method for synthesizing audio from audio parameters (f0/loudness). Here, we use DDSP to synthesize from ground truth audio parameters.</li>
-    <li>DDSP(Heuristic(MIDI)): Here we compose DDSP (audio parameters -> audio) and a rudimentary heuristic (MIDI -> audio parameters). </li>
+    <li><b>Human Recordings</b>: The gold standard: the original human recording of the test piece.</li>
+    <li><b><a href="https://github.com/magenta/ddsp">DDSP</a></b>: The upper bound of realism that our MIDI2Params model could conceivably reach. For this baseline, we run the audio parameters extracted from the human recording directly into the DDSPmodel trained on our violin dataset.</li>
+    <li><b><a href="https://en.wikipedia.org/wiki/FluidSynth">Concatenative (freely-available)</a></b>: The "low bar" for instrument synthesis. This baseline is from afreely-available concatenative synthesizer called FluidSynth.</li>
+    <li><b><a href="http://www.soundsonline.com/hollywood-solo-series">Concatenative (commercially-available)</a></b>: The "state-of-the-art" for instrument synthesis; what a modern professional musician would employ to get the best sound short of hiring a real musician.</li>
+    <li><b>DDSP(Heuristic(MIDI))</b>: The "low bar" for our MIDI2Params  model. This baseline uses a heuristic to convert MIDI into DDSP-style audio parameters. </li>
+    <li><b>DDSP(MIDI2Params_{transcribed}(MIDI))</b>: </li>
+    <li><b>DDSP(MIDI2Params_{aligned}(MIDI))</b>: </li>
 </ul>
 
 </p>
@@ -142,8 +146,5 @@ Below are some samples comparing our proposed system DDSP(midi2params_{aligned}(
 </tr>
 </table>
 
-<p>
-Commentary: 
-</p>
 </body>
 </html>
