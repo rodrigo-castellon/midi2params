@@ -13,15 +13,16 @@ clip_nums = [
     17
 ]
 
-clip_types = ['obligation', 'shoulder', 'grandmother', 'art', 'variant', 'bubble']
+clip_types = ['obligation', 'shoulder', 'grandmother', 'art', 'variant', 'bubble', 'drain']
 
+save_path = 'data2'
 
 for num in clip_nums:
     for tp in clip_types:
         pointer = os.path.join(tp, str(num).zfill(2) + '.wav')
         link = os.path.join(link_body, pointer)
         print(link)
-        local_link = os.path.join('data', pointer)
+        local_link = os.path.join(save_path, pointer)
         local_dir = os.path.split(local_link)[0]
         if not os.path.exists(local_dir):
             os.makedirs(local_dir)
