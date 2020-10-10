@@ -16,15 +16,15 @@ See the below diagram to get an idea of what we're talking about.
 
 
 <p>
-Below are some samples comparing our proposed system DDSP(midi2params_{aligned}(MIDI)) to other "basslines," including:
+Below are some samples comparing our proposed system DDSP(midi2params_{aligned}(MIDI)) to other "basslines." Below is a list of all systems we compared:
 <ul>
     <li><b>Human Recordings</b>: The gold standard: the original human recording of the test piece.</li>
     <li><b><a href="https://github.com/magenta/ddsp">DDSP</a></b>: The upper bound of realism that our MIDI2Params model could conceivably reach. For this baseline, we run the audio parameters extracted from the human recording directly into the DDSPmodel trained on our violin dataset.</li>
     <li><b><a href="https://en.wikipedia.org/wiki/FluidSynth">Concatenative (freely-available)</a></b>: The "low bar" for instrument synthesis. This baseline is from afreely-available concatenative synthesizer called FluidSynth.</li>
     <li><b><a href="http://www.soundsonline.com/hollywood-solo-series">Concatenative (commercially-available)</a></b>: The "state-of-the-art" for instrument synthesis; what a modern professional musician would employ to get the best sound short of hiring a real musician.</li>
     <li><b>DDSP(Heuristic(MIDI))</b>: The "low bar" for our MIDI2Params  model. This baseline uses a heuristic to convert MIDI into DDSP-style audio parameters. </li>
-    <li><b>DDSP(MIDI2Params_{transcribed}(MIDI))</b>: </li>
-    <li><b>DDSP(MIDI2Params_{aligned}(MIDI))</b>: </li>
+    <li><b>DDSP(MIDI2Params_{transcribed}(MIDI))</b>: Our MIDI2Params system, which was trained on MIDI that was <i>transcribed</i> directly from the human recordings.</li>
+    <li><b>DDSP(MIDI2Params_{aligned}(MIDI))</b>: Our MIDI2Params system, which was trained on MIDI that was <i>aligned</i> from pre-existing sheet music onto the human recordings.</li>
 </ul>
 
 </p>
@@ -32,115 +32,131 @@ Below are some samples comparing our proposed system DDSP(midi2params_{aligned}(
 <table>
     <tr>
         <th>Clip #</th>
-        <th>Human (Original Audio)</th>
-        <th>FluidSynth</th>
-        <th>Concatenative Synthesis</th>
-        <th>DDSP(Heuristic(MIDI))</th>
+        <th>Human Recordings</th>
         <th>DDSP</th>
+        <th>Concatenative (freely-available)</th>
+        <th>Concatenative (commercially-available)</th>
+        <th>DDSP(Heuristic(MIDI))</th>
+        <th>DDSP(midi2params_{transcribed}(MIDI))</th>
         <th>DDSP(midi2params_{aligned}(MIDI))</th>
     </tr>
 <tr>
     <td>1</td>
-    <td><audio controls="controls" src="data/obligation/08.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/obligation/08.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/shoulder/08.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/variant/08.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/grandmother/08.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/shoulder/08.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/art/08.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/grandmother/08.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/variant/08.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/art/08.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/bubble/08.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/drain/08.wav">
+        Your browser does not support the HTML5 Audio element.
+    </audio></td>
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/bubble/08.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
 </tr>
 <tr>
     <td>2</td>
-    <td><audio controls="controls" src="data/obligation/10.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/obligation/10.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/shoulder/10.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/variant/10.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/grandmother/10.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/shoulder/10.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/art/10.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/grandmother/10.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/variant/10.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/art/10.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/bubble/10.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/drain/10.wav">
+        Your browser does not support the HTML5 Audio element.
+    </audio></td>
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/bubble/10.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
 </tr>
 <tr>
     <td>3</td>
-    <td><audio controls="controls" src="data/obligation/12.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/obligation/12.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/shoulder/12.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/variant/12.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/grandmother/12.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/shoulder/12.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/art/12.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/grandmother/12.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/variant/12.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/art/12.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/bubble/12.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/drain/12.wav">
+        Your browser does not support the HTML5 Audio element.
+    </audio></td>
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/bubble/12.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
 </tr>
 <tr>
     <td>4</td>
-    <td><audio controls="controls" src="data/obligation/16.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/obligation/16.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/shoulder/16.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/variant/16.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/grandmother/16.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/shoulder/16.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/art/16.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/grandmother/16.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/variant/16.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/art/16.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/bubble/16.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/drain/16.wav">
+        Your browser does not support the HTML5 Audio element.
+    </audio></td>
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/bubble/16.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
 </tr>
 <tr>
     <td>5</td>
-    <td><audio controls="controls" src="data/obligation/17.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/obligation/17.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/shoulder/17.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/variant/17.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/grandmother/17.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/shoulder/17.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/art/17.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/grandmother/17.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/variant/17.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/art/17.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
-    <td><audio controls="controls" src="data/bubble/17.wav">
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/drain/17.wav">
+        Your browser does not support the HTML5 Audio element.
+    </audio></td>
+    <td><audio controls="controls" src="http://nlp.stanford.edu/data/cdonahue/wavegenie_userstudy/v2/bubble/17.wav">
         Your browser does not support the HTML5 Audio element.
     </audio></td>
 </tr>
