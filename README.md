@@ -1,15 +1,15 @@
 # Setup
 
 ```sh
-virtualenv -p python3 --no-site-packages wavegenie
-cd wavegenie
+virtualenv -p python3 --no-site-packages midi2params_env
+cd midi2params_env
 source bin/activate
 git clone https://github.com/magenta/ddsp.git
 cd ddsp
 pip install -e .
 cd ..
-git clone git@github.com:chrisdonahue/wavegenie.git
-cd wavegenie
+git clone https://github.com/rodrigo-castellon/midi2params.git
+cd midi2params
 pip install -e .
 pip install -r requirements.txt
 ```
