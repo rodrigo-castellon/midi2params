@@ -9,8 +9,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-import wavegenie.constants as constants
-from wavegenie.util import sample_from
+import utils.constants as constants
+from utils.util import sample_from
 
 class NoContextLinear(nn.Module):
     """

@@ -20,10 +20,10 @@ import argparse
 import multiprocessing
 print('finished importing standard libraries')
 
-print('importing wavegenie code')
-from wavegenie.util import DDSP_DEFAULT_FS_AUDIO
-from wavegenie.util import extract_ddsp_synthesis_parameters
-print('finished importing wavegenie code')
+#print('importing wavegenie code')
+from utils.util import DDSP_DEFAULT_FS_AUDIO
+from utils.util import extract_ddsp_synthesis_parameters
+#print('finished importing wavegenie code')
 
 # some global variables
 lock = multiprocessing.Lock()

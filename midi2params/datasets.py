@@ -14,7 +14,7 @@ import time
 import copy
 from addict import Dict
 
-from wavegenie.util import p2f, to_numpy
+from utils.util import p2f, to_numpy
 
 ############
 # Datasets #

@@ -12,10 +12,10 @@ import pickle
 import warnings
 warnings.filterwarnings('ignore')
 
-from wavegenie.audio_io import load_audio, save_wav
-from wavegenie.util import preview_audio, DDSP_DEFAULT_FS_AUDIO
-from wavegenie.util import extract_ddsp_synthesis_parameters
-from wavegenie.util import load_ddsp_model
+from utils.audio_io import load_audio, save_wav
+from utils.util import preview_audio, DDSP_DEFAULT_FS_AUDIO
+from utils.util import extract_ddsp_synthesis_parameters
+from utils.util import load_ddsp_model
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description='Heuristic MIDI conversion program.')

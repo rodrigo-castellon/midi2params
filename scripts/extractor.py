@@ -14,9 +14,9 @@ import argparse
 from scipy.io.wavfile import read as wavread
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # suppress annoying TF warnings
 
-from wavegenie.audio_io import load_audio, save_wav
-from wavegenie.util import preview_audio, DDSP_DEFAULT_FS_AUDIO
-from wavegenie.util import extract_ddsp_synthesis_parameters
+from utils.audio_io import load_audio, save_wav
+from utils.util import preview_audio, DDSP_DEFAULT_FS_AUDIO
+from utils.util import extract_ddsp_synthesis_parameters
 
 # name of parallel folder holding the parameters we are extracting
 BASE_FOLDER_NAME = 'params'

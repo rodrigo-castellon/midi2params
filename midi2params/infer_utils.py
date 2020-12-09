@@ -18,7 +18,7 @@ import random
 import os
 import matplotlib.pyplot as plt
 import argparse
-from wavegenie.util import to_numpy, p2f, sample_from
+from utils.util import to_numpy, p2f, sample_from
 
 import datasets
 import models

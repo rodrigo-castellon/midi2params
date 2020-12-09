@@ -1,4 +1,4 @@
-wavegenie.egg-info/
+*.egg-info/
 params/
 test_data/
 logs/

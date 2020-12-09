@@ -6,7 +6,7 @@ import os
 import pickle
 import pretty_midi
 
-import wavegenie.constants as constants
+import utils.constants as constants
 
 ############
 # Datasets #

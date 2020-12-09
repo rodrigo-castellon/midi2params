@@ -9,7 +9,7 @@ import copy
 import numpy as np
 import pickle
 
-from wavegenie.util import notes2pitches
+from utils.util import notes2pitches
 
 FRAME_RATE = 250
 

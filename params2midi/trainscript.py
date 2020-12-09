@@ -17,7 +17,7 @@ from addict import Dict
 from datetime import datetime
 
 from train_utils import *
-import wavegenie.constants as constants
+import utils.constants as constants
 
 import wandb
 
