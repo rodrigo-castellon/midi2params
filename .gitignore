@@ -8,6 +8,8 @@ data/
 wandb/
 __pycache__
 .ipynb_checkpoints
+*.tgz
+*.tar
 *.wav
 *.pyc
 *.npy
