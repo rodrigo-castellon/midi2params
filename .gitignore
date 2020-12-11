@@ -1,4 +1,6 @@
 *.egg-info/
+checkpoints/
+model/
 params/
 test_data/
 logs/
