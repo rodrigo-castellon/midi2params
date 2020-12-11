@@ -2,14 +2,20 @@
 File intended to end with environment that allows interaction with dataloader for inspection.
 """
 
+print('importing stuff 1')
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
+print('importing stuff 2')
 
 import numpy as np
 import yaml
 from addict import Dict
 from datetime import datetime
+
+print('importing stuff 3')
 
 from train_utils import *
 
