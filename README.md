@@ -1,20 +1,38 @@
-# Setup
+# Getting Started
+
+Below are some commands you might want to run to get this repo set up and running.
 
 ```sh
+# set up a virtual environment
 virtualenv -p python3 --no-site-packages midi2params_env
 cd midi2params_env
 source bin/activate
-git clone https://github.com/magenta/ddsp.git
-cd ddsp
-pip install -e .
-cd ..
-git clone https://github.com/rodrigo-castellon/midi2params.git
+
+# install some python packages
+pip install ddsp==0.7.0
+pip install pyyaml
+pip install addict
+pip install torch==1.2.0
+pip install pretty_midi
+python -m pip install ipykernel
+git clone --single-branch --branch dev1 https://github.com/rodrigo-castellon/midi2params.git
 cd midi2params
 pip install -e .
-pip install -r requirements.txt
+# install the kernel into jupyter, so that it can be used
+# in the notebook
+python -m ipykernel install --user --name=testenv3
+
+# get necessary data
+./get_data.sh
+./get_checkpoint.sh
+./get_model.sh
 ```
 
+To test the model out, `notebooks/midi2params-results.ipynb` is a demo notebook.
+
 # File Structure Convention
+
+Some of these may be mainly relevant if you're interested in training models.
 
 ## `configs/`
 
@@ -48,20 +66,6 @@ Training script/utilities for our params2midi models.
 
 Catch-all for one-off and long-term reusable scripts for data wrangling/manipulation.
 
-## `wavegenie/`
+## `utils/`
 
-Contains all `wavegenie` package functionality, which primarily includes extra convenience functions taken from the official DDSP demo colab notebook.
-
-## `get_data.sh`
-
-Download and extract the raw indomain data used for DDSP.
-
-## `get_params.sh`
-
-Download and extract the DDSP model checkpoints.
-
-## `get_test.sh`
-
-Download test data.
-
-
+Contains utility and convenience functions.
