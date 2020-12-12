@@ -8,3 +8,4 @@ echo
 wget http://cs.stanford.edu/~rjcaste/research/model.tar
 
 tar -xvf model.tar
+rm model.tar
