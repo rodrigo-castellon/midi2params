@@ -30,6 +30,8 @@ python -m ipykernel install --user --name=testenv3
 
 To test the model out, `notebooks/midi2params-results.ipynb` is a demo notebook.
 
+Also, check out the paper, currently hosted at `https://cs.stanford.edu/~rjcaste/research/realistic_midi.pdf`.
+
 # File Structure Convention
 
 Some of these may be mainly relevant if you're interested in training models.
