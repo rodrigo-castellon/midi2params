@@ -20,7 +20,7 @@ cd midi2params
 pip install -e .
 # install the kernel into jupyter, so that it can be used
 # in the notebook
-python -m ipykernel install --user --name=testenv3
+python -m ipykernel install --user --name=midi2params_env
 
 # get necessary data
 ./get_data.sh
