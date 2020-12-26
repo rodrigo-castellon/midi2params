@@ -15,7 +15,7 @@ pip install addict
 pip install torch==1.2.0
 pip install pretty_midi
 python -m pip install ipykernel
-git clone --single-branch --branch dev1 https://github.com/rodrigo-castellon/midi2params.git
+git clone https://github.com/rodrigo-castellon/midi2params.git
 cd midi2params
 pip install -e .
 # install the kernel into jupyter, so that it can be used
