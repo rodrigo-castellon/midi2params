@@ -1,5 +1,7 @@
 """
-File intended to end with environment that allows interaction with dataloader for inspection.
+Reproduce midi2params by doing a forward pass on a given example from the test set.
+Specifically, we get the last batch of the test set and choose the 7th example, which
+has paired <midi,audio>, which allows us to do several listening tests at once.
 """
 
 import torch
@@ -74,4 +76,54 @@ loss_fn_soft = loss_fn_dict['cross-entropy-2']
 print('defining optimizer')
 optimizer = get_optimizer(model, config)
 
-# to get a batch just do `for batch in {train, val}_loader: pass`
+
+# get the last batch from test_loader
+
+for batch in test_loader:
+    pass
+
+
+i = 7
+print(batch.keys())
+
+
+# extract the f0/loudness features/parameters with DDSP
+
+# now load the DDSP model
+
+# now resynthesize the same audio, should sound similar
+
+# now we take the MIDI for this example and heuristically generate
+# reasonable f0/loudness curves via heuristics
+
+
+# now resynthesize into the audio. this should sound more different.
+
+
+
+
+# now we take the MIDI for this example and instead of heuristically
+# generating f0/loudness curves, we generate them with our best learned
+# midi2params model
+
+# load the model
+
+# convert to CUDA if possible
+
+# generate the parameters
+
+
+# now resynthesize with DDSP
+
+
+
+
+
+
+
+
+
+
+
+
+
