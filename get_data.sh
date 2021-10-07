@@ -17,3 +17,7 @@ wget http://cs.stanford.edu/~rjcaste/research/CustomViolin_16k_train_transcribed
 
 tar -xvf CustomViolin_16k_train_aligned.tar
 tar -xvf CustomViolin_16k_train_transcribed.tar
+
+# get 10s one because that's the one we use to test
+wget http://cs.stanford.edu/~rjcaste/research/CustomViolin_16k_10s.tar
+tar -xvf CustomViolin_16k_10s.tar
