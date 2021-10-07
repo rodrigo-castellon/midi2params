@@ -15,7 +15,7 @@ from train_utils import *
 
 args = parse_arguments()
 
-args.config = '/juice/scr/rjcaste/curis/wavegenie/midi2params/configs/midi2params-test.yml'
+args.config = '/workspace/midi2params/midi2params/configs/midi2params-test.yml'
 
 # get config
 print('getting config')
