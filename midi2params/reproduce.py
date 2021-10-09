@@ -86,36 +86,97 @@ for batch in test_loader:
 i = 7
 print(batch.keys())
 
+audio = to_numpy(batch['audio'][i])[..., np.newaxis]
 
 # extract the f0/loudness features/parameters with DDSP
+from utils.util import extract_ddsp_synthesis_parameters
+
+audio_parameters = extract_ddsp_synthesis_parameters(audio)
+
 
 # now load the DDSP model
 
+from utils.util import load_ddsp_model
+
+ckpt_path = '/workspace/midi2params/checkpoints/CustomViolinCheckpoint'
+model = load_ddsp_model(ckpt_path)
+
 # now resynthesize the same audio, should sound similar
+
+from utils.util import synthesize_ddsp_audio
+
+resynth = synthesize_ddsp_audio(model, audio_parameters)
 
 # now we take the MIDI for this example and heuristically generate
 # reasonable f0/loudness curves via heuristics
 
+def generate_loud(beats, length=1250, decay=True):
+    """
+    Generate a loudness envelope for each note, decaying over time.
+    """
+    arrs = []
+    length = 2500
+    base = -30
+    decay_rate = -0.01 # decays -1 per timestep/index
+    #notelength = 0.7
+    ld_arr = np.full((length), -120)
+    for i, beat in enumerate(beats):
+        if i == len(beats) - 1:
+            next_beat = length
+        else:
+            next_beat = beats[i + 1]
+        ld_arr[beat:next_beat] = np.linspace(base, base + decay_rate * (next_beat - beat), next_beat - beat)
+
+    return ld_arr
+
+
+def gen_heuristic(batch, i=0):
+    """
+    Take a batch containing 'pitches', 'onset_arr', and 'offset_arr' and
+    turn them into f0 and loudness heuristically.
+    """
+    onsets = np.where(batch['onset_arr'][i] == 1)[0]
+    if len([i for i in onsets if i < 30]) == 0:
+        onsets = np.concatenate(([10], onsets))
+
+    ld = generate_loud(onsets)
+    pitches = copy.deepcopy(batch['pitches'][i])
+    f0 = np.array(p2f(pitches))
+    return f0, ld
 
 # now resynthesize into the audio. this should sound more different.
 
-
+f0_h, ld_h = gen_heuristic(batch, i=i)
+heuristic_parameters = {
+    'f0_hz': f0_h.astype(np.float32),
+    'loudness_db': ld_h.astype(np.float32)
+}
 
 
 # now we take the MIDI for this example and instead of heuristically
 # generating f0/loudness curves, we generate them with our best learned
 # midi2params model
 
-# load the model
+model_path = '/workspace/midi2params/model/best_model.pt'
+for batch in test_loader:
+    break
 
-# convert to CUDA if possible
+# load the model
+best_model = load_best_model(config, model_path)
 
 # generate the parameters
-
+f0_pred, ld_pred = midi2params(best_model, batch)
 
 # now resynthesize with DDSP
+for k, arr in batch.items():
+    batch[k] = to_numpy(arr)
 
+train_params = {
+    'f0_hz': f0_pred[i],
+    'loudness_db': ld_pred[i]
+}
 
+new_model_resynth = synthesize_ddsp_audio(model, train_params)
 
 
 
