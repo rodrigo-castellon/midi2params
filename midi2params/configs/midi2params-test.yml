@@ -13,7 +13,7 @@ oneoff: False
 subconfigs:
 - model: 'seq-1'
 logging:
-    log_dir: '/workspace/midi2params/logs'
+    log_dir: '/work/midi2params/logs'
     # log perplexity of every loss metric to W&B
     log_perplexity: False
     example_saving:
@@ -51,7 +51,7 @@ training:
     train_only_on_loudness: False
 dataset:
     # path to dataset, which contains paired training data
-    dset_path: '/workspace/midi2params/data/CustomViolin_16k_10s'
+    dset_path: '/work/midi2params/data/CustomViolin_16k_10s'
     # name of subfolder under dset_path corresponding to control parameters
     params_folder_name: 'params'
     # name of subfolder under dset_path corresponding to MIDI files

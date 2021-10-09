@@ -12,12 +12,14 @@ import numpy as np
 import yaml
 from addict import Dict
 from datetime import datetime
+import copy
+from scipy.io.wavfile import write as wavwrite
 
 from train_utils import *
 
 args = parse_arguments()
 
-args.config = '/workspace/midi2params/midi2params/configs/midi2params-test.yml'
+args.config = '/work/midi2params/midi2params/configs/midi2params-test.yml'
 
 # get config
 print('getting config')
@@ -89,23 +91,30 @@ print(batch.keys())
 audio = to_numpy(batch['audio'][i])[..., np.newaxis]
 
 # extract the f0/loudness features/parameters with DDSP
+print('extracting f0/loudness parameters with DDSP...')
 from utils.util import extract_ddsp_synthesis_parameters
 
 audio_parameters = extract_ddsp_synthesis_parameters(audio)
 
 
 # now load the DDSP model
+print('loading DDSP model...')
 
 from utils.util import load_ddsp_model
 
-ckpt_path = '/workspace/midi2params/checkpoints/CustomViolinCheckpoint'
+ckpt_path = '/work/midi2params/checkpoints/CustomViolinCheckpoint'
 model = load_ddsp_model(ckpt_path)
 
 # now resynthesize the same audio, should sound similar
+print('resythesizing...')
 
 from utils.util import synthesize_ddsp_audio
 
 resynth = synthesize_ddsp_audio(model, audio_parameters)
+
+#print(resynth)
+#print(resynth.shape)
+wavwrite('test1.wav', 16000, resynth)
 
 # now we take the MIDI for this example and heuristically generate
 # reasonable f0/loudness curves via heuristics
@@ -144,27 +153,33 @@ def gen_heuristic(batch, i=0):
     f0 = np.array(p2f(pitches))
     return f0, ld
 
-# now resynthesize into the audio. this should sound more different.
-
+print('generating heuristic parameters...')
 f0_h, ld_h = gen_heuristic(batch, i=i)
 heuristic_parameters = {
     'f0_hz': f0_h.astype(np.float32),
     'loudness_db': ld_h.astype(np.float32)
 }
 
+# now resynthesize into the audio. this should sound more different.
+print('resynthesizing...')
+
+resynth = synthesize_ddsp_audio(model, heuristic_parameters)
+wavwrite('test2.wav', 16000, resynth)
 
 # now we take the MIDI for this example and instead of heuristically
 # generating f0/loudness curves, we generate them with our best learned
 # midi2params model
 
-model_path = '/workspace/midi2params/model/best_model.pt'
+model_path = '/work/midi2params/model/best_model_cpu_120.pt'
 for batch in test_loader:
     break
 
 # load the model
+print('loading midi2params model...')
 best_model = load_best_model(config, model_path)
 
 # generate the parameters
+print('generating the parameters...')
 f0_pred, ld_pred = midi2params(best_model, batch)
 
 # now resynthesize with DDSP
@@ -176,10 +191,10 @@ train_params = {
     'loudness_db': ld_pred[i]
 }
 
+print('resynthesizing...')
 new_model_resynth = synthesize_ddsp_audio(model, train_params)
 
-
-
+wavwrite('test3.wav', 16000, new_model_resynth)
 
 
 
