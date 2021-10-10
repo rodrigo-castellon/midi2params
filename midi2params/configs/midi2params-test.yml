@@ -3,7 +3,7 @@
 ---
 # replace these absolute paths with your own paths
 seed: 1
-device: 'cuda'
+device: 'cpu'
 # frame rate of DDSP control parameters
 frame_rate: 250
 sample_rate: 16000
@@ -60,5 +60,5 @@ dataset:
 loader:
     shuffle_during_eval: False
     batch_size: 100
-    num_workers: 4
-    pin_memory: True
+    num_workers: 0
+    pin_memory: False
