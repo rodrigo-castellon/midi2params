@@ -1,36 +1,50 @@
 # Getting Started
 
-Below are some commands you might want to run to get this repo set up and running.
+## Reproducing inference
 
-```sh
-# set up a virtual environment
-virtualenv -p python3 --no-site-packages midi2params_env
-cd midi2params_env
-source bin/activate
+Inference can be reproduced with Docker containers. Follow the below instructions to do so:
 
-# install some python packages
-pip install ddsp==0.7.0
-pip install pyyaml
-pip install addict
-pip install torch==1.2.0
-pip install pretty_midi
-python -m pip install ipykernel
-git clone https://github.com/rodrigo-castellon/midi2params.git
-cd midi2params
-pip install -e .
-# install the kernel into jupyter, so that it can be used
-# in the notebook
-python -m ipykernel install --user --name=midi2params_env
+1. Make sure you have Docker and Git installed on your machine.
+2. Create a new file called `Dockerfile` and copy-paste the below in it:
+```Dockerfile
+FROM pytorch/pytorch:1.2-cuda10.0-cudnn7-devel
 
-# get necessary data
-./get_data.sh
-./get_checkpoint.sh
-./get_model.sh
+RUN python3 -m pip install ddsp==0.7.0
+RUN python3 -m pip install pyyaml
+RUN python3 -m pip install addict
+RUN python3 -m pip install pretty_midi
+RUN python3 -m pip install pandas
+RUN python3 -m pip install --upgrade setuptools
+
+# install some system packages
+RUN apt-get update
+RUN apt-get install -y wget
+RUN apt-get install -y vim
+RUN apt-get install -y libsndfile1
+
+RUN echo "rm -rf /work/midi2params" >> /workspace/startup.sh
+RUN echo "cd /work" >> /workspace/startup.sh
+RUN echo "git clone https://github.com/rodrigo-castellon/midi2params.git" >> /workspace/startup.sh
+RUN echo "cd midi2params && git checkout reproduce" >> /workspace/startup.sh
+RUN echo "python3 -m pip install -e ." >> /workspace/startup.sh
+RUN echo "./get_data.sh" >> /workspace/startup.sh
+RUN echo "./get_checkpoint.sh" >> /workspace/startup.sh
+RUN echo "./get_model.sh" >> /workspace/startup.sh
+
+ENTRYPOINT /bin/bash /workspace/startup.sh && /bin/bash
 ```
+3. Run the command `docker build -t midi2params . && docker run -it --rm -v $(pwd):/work midi2params`
+    - This will build the Docker image from the above Dockerfile and run it as a container, with bash as the shell.
+4. Once inside the Docker container, go to the `/work/midi2params` directory.
+5. Run `python3 midi2params/reproduce.py` to reproduce.
 
-To test the model out, `notebooks/midi2params-results.ipynb` is a demo notebook.
+## Reproducing Training
 
-Also, check out the paper, currently hosted [here](https://cs.stanford.edu/~rjcaste/research/realistic_midi.pdf).
+Reproducing training runs with Docker containers is forthcoming.
+
+## Paper
+
+Check out the paper, currently hosted [here](https://cs.stanford.edu/~rjcaste/research/realistic_midi.pdf).
 
 # File Structure Convention
 
