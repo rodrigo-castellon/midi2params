@@ -1,7 +1,8 @@
 """
-Reproduce midi2params by doing a forward pass on a given example from the test set.
-Specifically, we get the last batch of the test set and choose the 7th example, which
-has paired <midi,audio>, which allows us to do several listening tests at once.
+Reproduce midi2params in one of three ways, as specified by the user. Either pass in a path to a MIDI file
+and run DDSP(midi2params(MIDI)) or DDSP(Heuristic(MIDI)), or you pass in a path to an audio file, in which case
+we extract audio parameters from that audio file and resynthesize with DDSP. All models used here are trained
+on the custom violin dataset.
 """
 
 import torch as t
