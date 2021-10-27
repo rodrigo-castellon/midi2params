@@ -19,10 +19,12 @@ from scipy.io.wavfile import read as wavread, write as wavwrite
 import pretty_midi
 from pathlib import Path
 import pickle
+import os
 
 from utils.util import load_ddsp_model
 from utils.util import synthesize_ddsp_audio
 from utils.util import extract_ddsp_synthesis_parameters
+from utils.util import notes2pitches
 
 from train_utils import *
 
@@ -64,7 +66,7 @@ def midi2batch(midi_path):
 
     if midi_path.suffix[:4] == '.mid':
         # handle the possibility of either .mid or .midi files
-        midi = pretty_midi.PrettyMIDI(midi_path)
+        midi = pretty_midi.PrettyMIDI(str(midi_path))
         print(midi.instruments)
         notes = midi.instruments[0].notes
 
@@ -226,6 +228,7 @@ def main():
     ckpt_path = '/work/midi2params/checkpoints/CustomViolinCheckpoint'
     model = load_ddsp_model(ckpt_path)
 
+    # perform computation
     if args.resynthesis:
         output = resynthesize(args.resynthesis, model)
     elif args.midi2params:
@@ -236,6 +239,8 @@ def main():
        print('you didn\'t pick anything!')
        return
 
+    # save
+    os.makedirs(Path(args.out).parent, exist_ok=True)
     wavwrite(args.out, 16000, output)
 
 
