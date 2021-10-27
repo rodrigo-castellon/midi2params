@@ -36,7 +36,7 @@ ENTRYPOINT /bin/bash /workspace/startup.sh && /bin/bash
 3. Run the command `docker build -t midi2params . && docker run -it --rm -v $(pwd):/work midi2params`
     - This will build the Docker image from the above Dockerfile and run it as a container, with bash as the shell.
 4. Once inside the Docker container, go to the `/work/midi2params` directory.
-5. Run `python3 midi2params/reproduce.py` to reproduce.
+5. Run `bash reproduce.sh` to reproduce DDSP(midi2params(MIDI)), DDSP(Heuristic(MIDI)), and DDSP, as seen in the demo page [here](https://rodrigo-castellon.github.io/midi2params/).
 
 ## Reproducing Training
 

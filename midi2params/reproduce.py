@@ -17,6 +17,12 @@ import copy
 import librosa as lr
 from scipy.io.wavfile import read as wavread, write as wavwrite
 import pretty_midi
+from pathlib import Path
+import pickle
+
+from utils.util import load_ddsp_model
+from utils.util import synthesize_ddsp_audio
+from utils.util import extract_ddsp_synthesis_parameters
 
 from train_utils import *
 
@@ -31,11 +37,12 @@ def parse_arguments():
     # for (1) you can provide an audio file to extract parameters from
     # for (2) and (3) you can provide a MIDI file
 
-    parser = argparse.ArgumentParser(description='Train a model.')
+    parser = argparse.ArgumentParser(description='Run inference with the best model.')
 
     parser.add_argument('--resynthesis', type=str)
     parser.add_argument('--midi2params', type=str)
     parser.add_argument('--heuristic', type=str)
+    parser.add_argument('--out', type=str, default='out.wav')
 
     args = parser.parse_args()
 
@@ -43,67 +50,60 @@ def parse_arguments():
 
 def midi2batch(midi_path):
     """
-    Take a PrettyMIDI object as input and return batch, a dict with 'pitches' and
-    'onset_arr' and 'offset_arr'.
+    Take a path to a MIDI file as input and return batch,
+    a dict with 'pitches' and 'onset_arr' and 'offset_arr'.
+
+    Note that this accepts both .mid* files and "processed"
+    pickle files (see MIDI2ParamsDataset.load_midi for more
+    info).
     """
 
+    midi_path = Path(midi_path)
     frame_rate = 250
     len_clip = 10
 
-    # handle the possibility of either .mid or .midi files
-    midi = pretty_midi.PrettyMIDI(midi_path)
-    print(midi.instruments)
-    notes = midi.instruments[0].notes
+    if midi_path.suffix[:4] == '.mid':
+        # handle the possibility of either .mid or .midi files
+        midi = pretty_midi.PrettyMIDI(midi_path)
+        print(midi.instruments)
+        notes = midi.instruments[0].notes
 
-    # get onsets/offsets from MIDI
-    onsets = [int(frame_rate * n.start) for n in notes]
-    offsets = [int(frame_rate * n.end) for n in notes]
-    # NOTE: make extra long arrays just in case the MIDI notes go on for longer
-    onset_arr = np.zeros((3 * len_clip * frame_rate), dtype=np.float32)
-    onset_arr[onsets] = 1  # embed pointwise onsets/offsets into zero array
-    offset_arr = np.zeros((3 * len_clip * frame_rate), dtype=np.float32)
-    offset_arr[offsets] = 1  # embed pointwise onsets/offsets into zero array
+        # get onsets/offsets from MIDI
+        onsets = [int(frame_rate * n.start) for n in notes]
+        offsets = [int(frame_rate * n.end) for n in notes]
+        # NOTE: make extra long arrays just in case the MIDI notes go on for longer
+        onset_arr = np.zeros((3 * len_clip * frame_rate), dtype=np.float32)
+        onset_arr[onsets] = 1  # embed pointwise onsets/offsets into zero array
+        offset_arr = np.zeros((3 * len_clip * frame_rate), dtype=np.float32)
+        offset_arr[offsets] = 1  # embed pointwise onsets/offsets into zero array
 
-    # get pitches
-    pitches = notes2pitches(notes, 3 * len_clip * frame_rate, NO_NOTE_VAL=0)
+        # get pitches
+        pitches = notes2pitches(notes, 3 * len_clip * frame_rate, NO_NOTE_VAL=0)
+
+    elif midi_path.suffix == '.p':
+        arrs = pickle.load(open(midi_path, 'rb'))
+        pitches, onset_arr, offset_arr = arrs['pitches'].astype(np.float32), arrs['onset_arr'].astype(np.float32), arrs['offset_arr'].astype(np.float32)
 
     batch = {
-        'pitches': pitches,
-        'onset_arr': onset_arr,
-        'offset_arr': offset_arr
+	'pitches': pitches,
+	'onset_arr': onset_arr,
+	'offset_arr': offset_arr
     }
 
-    batch = {k: t.Tensor(batch[k][:len_clip * frame_rate]) for k in batch.keys()}
+    batch = {k: t.Tensor(batch[k][np.newaxis, :len_clip * frame_rate]) for k in batch.keys()}
 
     return batch
 
-args = parse_arguments()
+def resynthesize(audio_path, model):
+    """
+    Take a path to an audio file, extract f0/loudness parameters, and
+    resynthesize using DDSP. Then, synthesize with DDSP.
+    """
 
-config_path = '/work/midi2params/midi2params/configs/midi2params-test.yml'
-
-# get config
-print('getting config')
-config = load_config(config_path)
-
-# override if we just don't have a GPU
-if not(torch.cuda.is_available()) and config.device == 'cuda':
-    config.device = 'cpu'
-
-# now load the DDSP model
-print('loading DDSP model...')
-
-from utils.util import load_ddsp_model
-from utils.util import synthesize_ddsp_audio
-
-ckpt_path = '/work/midi2params/checkpoints/CustomViolinCheckpoint'
-model = load_ddsp_model(ckpt_path)
-
-if args.resynthesis:
-    audio = lr.load(args.resynthesis, mono=True, sr=16000)[0][..., np.newaxis]
+    audio = lr.load(audio_path, mono=True, sr=16000)[0][..., np.newaxis]
 
     # extract the f0/loudness features/parameters with DDSP
     print('extracting f0/loudness parameters with DDSP...')
-    from utils.util import extract_ddsp_synthesis_parameters
 
     audio_parameters = extract_ddsp_synthesis_parameters(audio)
 
@@ -112,16 +112,18 @@ if args.resynthesis:
 
     resynth = synthesize_ddsp_audio(model, audio_parameters)
 
-    wavwrite('out.wav', 16000, resynth)
+    return resynth
 
-elif args.midi2params:
-    # now we take the MIDI for this example and instead of heuristically
-    # generating f0/loudness curves, we generate them with our best learned
-    # midi2params model
+def convert_midi_to_parameters(midi_path, config, model):
+    """
+    Take a path to a MIDI file and use the learned model to generate f0/loudness
+    parameters using the best learned midi2params model. Then, synthesize with
+    DDSP.
+    """
 
     # transform MIDI file into a batch, which is a dict with 'pitches', 'onset_arr',
     # and 'offset_arr'
-    batch = midi2batch(args.midi2params)
+    batch = midi2batch(midi_path)
 
     model_path = '/work/midi2params/model/best_model_cpu_120.pt'
 
@@ -138,18 +140,24 @@ elif args.midi2params:
         batch[k] = to_numpy(arr)
 
     train_params = {
-        'f0_hz': f0_pred[i],
-        'loudness_db': ld_pred[i]
+        'f0_hz': f0_pred[0],
+        'loudness_db': ld_pred[0]
     }
 
     print('resynthesizing...')
     new_model_resynth = synthesize_ddsp_audio(model, train_params)
 
-    wavwrite('test3.wav', 16000, new_model_resynth)
+    return new_model_resynth
 
-elif args.heuristic:
-    # now we take the MIDI for this example and heuristically generate
-    # reasonable f0/loudness curves via heuristics
+def heuristic(midi_path, model):
+    """
+    Take a path to a MIDI file and heuristically generate reasonable
+    f0/loudness curves via heuristics. Then, synthesize with DDSP.
+    """
+
+    # transform MIDI file into a batch, which is a dict with 'pitches', 'onset_arr',
+    # and 'offset_arr'
+    batch = midi2batch(midi_path)
 
     def generate_loud(beats, length=1250, decay=True):
         """
@@ -163,14 +171,14 @@ elif args.heuristic:
         ld_arr = np.full((length), -120)
         for i, beat in enumerate(beats):
             if i == len(beats) - 1:
-                next_beat = length
+    	        next_beat = length
             else:
-                next_beat = beats[i + 1]
+    	        next_beat = beats[i + 1]
             ld_arr[beat:next_beat] = np.linspace(base, base + decay_rate * (next_beat - beat), next_beat - beat)
-
+    
         return ld_arr
-
-
+    
+    
     def gen_heuristic(batch, i=0):
         """
         Take a batch containing 'pitches', 'onset_arr', and 'offset_arr' and
@@ -186,7 +194,7 @@ elif args.heuristic:
         return f0, ld
 
     print('generating heuristic parameters...')
-    f0_h, ld_h = gen_heuristic(batch, i=i)
+    f0_h, ld_h = gen_heuristic(batch, i=0)
     heuristic_parameters = {
         'f0_hz': f0_h.astype(np.float32),
         'loudness_db': ld_h.astype(np.float32)
@@ -194,8 +202,42 @@ elif args.heuristic:
 
     # now resynthesize into the audio. this should sound more different.
     print('resynthesizing...')
-
+    
     resynth = synthesize_ddsp_audio(model, heuristic_parameters)
-    wavwrite('test2.wav', 16000, resynth)
-else:
-   print('you didn\'t pick anything!')
+
+    return resynth
+
+def main():
+    args = parse_arguments()
+
+    config_path = '/work/midi2params/midi2params/configs/midi2params-test.yml'
+
+    # get config
+    print('getting config')
+    config = load_config(config_path)
+
+    # override if we just don't have a GPU
+    if not(torch.cuda.is_available()) and config.device == 'cuda':
+        config.device = 'cpu'
+
+    # now load the DDSP model
+    print('loading DDSP model...')
+
+    ckpt_path = '/work/midi2params/checkpoints/CustomViolinCheckpoint'
+    model = load_ddsp_model(ckpt_path)
+
+    if args.resynthesis:
+        output = resynthesize(args.resynthesis, model)
+    elif args.midi2params:
+        output = convert_midi_to_parameters(args.midi2params, config, model)
+    elif args.heuristic:
+        output = heuristic(args.heuristic, model)
+    else:
+       print('you didn\'t pick anything!')
+       return
+
+    wavwrite(args.out, 16000, output)
+
+
+if __name__ == '__main__':
+    main()
