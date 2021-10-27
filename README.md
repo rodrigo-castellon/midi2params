@@ -4,7 +4,7 @@
 
 Inference can be reproduced with Docker containers. Follow the below instructions to do so:
 
-1. Make sure you have Docker and Git installed on your machine.
+1. Make sure you have Docker and Git installed on your machine, and `cd` to a new directory.
 2. Create a new file called `Dockerfile` and copy-paste the below in it:
 ```Dockerfile
 FROM pytorch/pytorch:1.2-cuda10.0-cudnn7-devel
